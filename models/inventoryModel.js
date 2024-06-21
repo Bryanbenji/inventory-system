@@ -12,7 +12,7 @@ const getProductById = (product_id, callback) => {
   const query = 'SELECT * FROM inventory WHERE product_id = ?';
   db.query(query, [product_id], (err, results) => {
     if (err) return callback(err);
-    callback(null, results[0]); // Assuming product_id is unique and results will have at most one entry
+    callback(null, results[0]);
   });
 };
 
@@ -40,8 +40,8 @@ const updateOrCreateInventory = (item, callback) => {
 };
 
 const createInvoice = (invoice, callback) => {
-  const query = 'INSERT INTO invoices (customer_data, product_image, quantity) VALUES (?, ?, ?)';
-  const values = [invoice.customer_data, invoice.product_image, invoice.quantity];
+  const query = 'INSERT INTO invoices (customer_data, product_image, quantity, orden, product_name) VALUES (?, ?, ?, ?, ?)';
+  const values = [invoice.customer_data, invoice.product_image, invoice.quantity, invoice.orden, invoice.product_name];
   db.query(query, values, (err, result) => {
     if (err) return callback(err);
     callback(null, result);
@@ -56,6 +56,14 @@ const getAllInvoices = (callback) => {
   });
 };
 
+const getInvoiceByOrderId = (order_id, callback) => {
+  const query = 'SELECT * FROM invoices WHERE orden = ?';
+  db.query(query, [order_id], (err, results) => {
+    if (err) return callback(err);
+    callback(null, results[0]);
+  });
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -63,4 +71,5 @@ module.exports = {
   updateOrCreateInventory,
   createInvoice,
   getAllInvoices,
+  getInvoiceByOrderId,
 };
