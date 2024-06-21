@@ -39,9 +39,28 @@ const updateOrCreateInventory = (item, callback) => {
   });
 };
 
+const createInvoice = (invoice, callback) => {
+  const query = 'INSERT INTO invoices (customer_data, product_image, quantity) VALUES (?, ?, ?)';
+  const values = [invoice.customer_data, invoice.product_image, invoice.quantity];
+  db.query(query, values, (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
+  });
+};
+
+const getAllInvoices = (callback) => {
+  const query = 'SELECT * FROM invoices';
+  db.query(query, (err, results) => {
+    if (err) return callback(err);
+    callback(null, results);
+  });
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   updateStock,
   updateOrCreateInventory,
+  createInvoice,
+  getAllInvoices,
 };

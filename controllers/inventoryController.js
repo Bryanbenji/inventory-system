@@ -9,6 +9,14 @@ const getProducts = (req, res) => {
   });
 };
 
+const getProductById = (req, res) => {
+    const { productId } = req.params;
+    inventoryModel.getProductById(productId, (err, product) => {
+      if (err) return res.status(500).json({ error: 'Error fetching product' });
+      res.status(200).json(product);
+    });
+  };
+
 const uploadCsvData = (req, res) => {
   const { csvData } = req.body;
 
@@ -55,4 +63,5 @@ const uploadCsvData = (req, res) => {
 module.exports = {
   getProducts,
   uploadCsvData,
+  getProductById
 };
